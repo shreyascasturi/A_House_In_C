@@ -1,5 +1,8 @@
 #include "house.h"
-                                
+
+char* address;
+int volt_usage;
+
 void enter_house() {
   printf("You have decided to enter the house with address %s\n\n\n", address);
   open_front_door();
@@ -8,6 +11,7 @@ void enter_house() {
 }
 
 void leave_house() {
+  //extern char* address;
   printf("You have decided to leave %s\n\n\n", address);
   open_front_door();
   close_front_door();
@@ -21,26 +25,20 @@ void close_front_door() {
   printf("You have closed the front door.\n\n\n");
 }
 
-void go_upstairs() {
-  printf("You go upstairs.\n\n\n");
-}
-
-void go_downstairs() {
-  printf("You go downstairs.\n\n\n");
-}
-
-void open_door(char* name_of_room) {
-  printf("You have opened the door into %s\n\n\n", name_of_room);
-}
-
-void close_door(char* name_of_room) {
-  printf("You have closed the door of this room %s\n\n\n", name_of_room);
-}
-
-void set_address(char* new_address) { 
+void set_address(char* new_address) {
+  //extern char* address;
   address = new_address;
 }
 
 void print_volt_usage() {
+  //extern int volt_usage;
   printf("the volt usage is %d volts. \n\n\n", volt_usage);
+}
+
+void get_address() {
+  printf("the address is %s.\n\n\n", address);
+}
+
+void get_date_time() {
+  GET_DATE_TIME;
 }
