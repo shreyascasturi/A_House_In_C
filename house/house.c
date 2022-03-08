@@ -1,18 +1,15 @@
 #include "house.h"
 
-char* address_;
-int volt_usage_;
-int num_of_floors_;
 
-void enter_house() {
-  printf("You have decided to enter the house with address %s\n\n\n", address_);
+void enter_house(House* house) {
+  printf("You have decided to enter the house with address %s\n\n\n", house->address_);
   open_front_door();
   close_front_door();
   printf("You are now inside the house.\n\n\n");
 }
 
-void leave_house() {
-  printf("You have decided to leave %s\n\n\n", address_);
+void leave_house(House* house) {
+  printf("You have decided to leave %s\n\n\n", house->address_);
   open_front_door();
   close_front_door();
 }
@@ -25,26 +22,47 @@ void close_front_door() {
   printf("You have closed the front door.\n\n\n");
 }
 
-void set_address_(char* new_address) {
-  address_ = new_address;
+void set_address_(House* house, char* new_address) {
+  house->address_ = new_address;
 }
 
-void print_volt_usage() {
-  printf("the volt usage is %d volts. \n\n\n", volt_usage_);
+void get_volt_usage(House* house) {
+  printf("the volt usage is %d volts. \n\n\n", house->volt_usage_);
 }
 
-void get_address() {
-  printf("the address is %s.\n\n\n", address_);
+void get_address(House* house) {
+  printf("the address is %s.\n\n\n", house->address_);
 }
 
 void get_date_time() {
   GET_DATE_TIME;
 }
 
-void get_num_of_floors_() {
-  printf("the number of floors at this house is %d.\n\n\n", num_of_floors_);
+void get_num_of_floors_(House* house) {
+  printf("the number of floors at this house is %d.\n\n\n", house->num_of_floors_);
 }
 
-void set_num_of_floors_(int num_of_floors) {
-  num_of_floors_ = num_of_floors;
+void set_num_of_floors_(House* house, int num_of_floors) {
+  house->num_of_floors_ = num_of_floors;
 }
+
+// taken from RIP Tutorial: "get lines from a file using getline()
+House* build_house(char* file_name) {
+  FILE* file_pointer = fopen(file_name, "r");
+  
+  char* line_buffer = NULL;
+  
+}
+
+void list_all_rooms(Floor* floor) {
+  
+}
+
+void get_all_items(Item** items) {
+  
+}
+void list_all_items(Room* room) {
+  
+}
+
+

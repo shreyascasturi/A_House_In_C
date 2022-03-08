@@ -7,4 +7,6 @@ typedef struct room {
   Item* item_collection_[];
 } Room;
 
+void list_all_items(Room* room);
+
 #endif

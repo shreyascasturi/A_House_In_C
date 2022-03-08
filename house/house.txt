@@ -1,0 +1,5 @@
+Address: 123 Anywhere United States
+Number Of Floors: 3
+F1->Living Room: TV, clock
+F2->Bedroom: bed, dresser
+F3->Attic: lightbulb

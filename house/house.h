@@ -1,6 +1,7 @@
 #ifndef NO_REDEF_HOUSE_
 #define NO_REDEF_HOUSE_
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 #include "floor.h"
 
@@ -11,28 +12,31 @@
 typedef struct house {
   char* address_;
   int num_of_floors_;
+  int volt_usage_;
   Floor* floor_collection_[];
   
 } House;
 
 void set_address(char* new_address);
 
-void enter_house();
+void enter_house(House* house);
 
-void leave_house();
+void leave_house(House* house);
 
 void open_front_door(); 
 
 void close_front_door(); 
 
-void print_volt_usage();
+void get_volt_usage(House* house);
 
-void get_address();
+void get_address(House* house);
 
 void get_date_time();
 
-void get_num_of_floors_();
+void get_num_of_floors_(House* house);
 
-void set_num_of_floors_(int num_of_floors);
+void set_num_of_floors_(House* house, int num_of_floors);
+
+House* build_house(char* file_name);
 
 #endif

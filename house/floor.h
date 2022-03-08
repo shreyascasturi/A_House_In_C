@@ -7,4 +7,7 @@ typedef struct floor {
   char* name_of_floor;
   Room* room_collection_[];
 } Floor;
+
+void list_all_rooms(Floor* floor);
+
 #endif
