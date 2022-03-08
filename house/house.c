@@ -48,10 +48,19 @@ void set_num_of_floors_(House* house, int num_of_floors) {
 
 // taken from RIP Tutorial: "get lines from a file using getline()
 House* build_house(char* file_name) {
-  FILE* file_pointer = fopen(file_name, "r");
-  
-  char* line_buffer = NULL;
-  
+  /* FILE* file_pointer = fopen(file_name, "r"); */
+  /* if (!file_pointer) { */
+  /*   fprintf(stderr, "Error opening file '%s'\n", file_name); */
+  /*   return EXIT_FAILURE; */
+  /* } */
+  /* char* line_buffer = NULL; */
+  /* size_t line_buf_size = 0; */
+  /* int line_count = 0; */
+  /* ssize_t line_size; */
+  /* line_size = getline(&line_buffer, &line_buf_size, file_pointer); */
+  /* while (line_size >= 0) { */
+  /*   line_count++; */
+
 }
 
 void list_all_rooms(Floor* floor) {
@@ -61,8 +70,32 @@ void list_all_rooms(Floor* floor) {
 void get_all_items(Item** items) {
   
 }
+
 void list_all_items(Room* room) {
   
 }
 
+char* read_line(char* file_name) {
+  char* line_arr;
+  FILE* file_ptr;
+  file_ptr = fopen(file_name, "r");
+  if (file_ptr == NULL) {
+    fprintf(stderr, "Cannot open file\n");    
+  }
+  char each_char;
+  line_arr = malloc(10 * sizeof(char)); // at least one char and null-terminator
+  if (line_arr == NULL) {
+    exit(0);
+  }
+  int line_length = 0;
+  while(1) {
+    each_char = fgetc(file_ptr);
+    if (each_char == EOF || each_char == '\0') {
+      break;
+    }
+    line_arr[line_length++] = each_char;
+    
+  }
 
+
+}
