@@ -75,6 +75,7 @@ void list_all_items(Room* room) {
   
 }
 
+// a basic re-implementation of line reading
 char* read_line(char* file_name) {
   char* line_arr;
   FILE* file_ptr;
@@ -83,19 +84,26 @@ char* read_line(char* file_name) {
     fprintf(stderr, "Cannot open file\n");    
   }
   char each_char;
-  line_arr = malloc(10 * sizeof(char)); // at least one char and null-terminator
+  // initial char arr allocation
+  line_arr = malloc(10 * sizeof(char)); 
   if (line_arr == NULL) {
     exit(0);
   }
   int line_length = 0;
+  int line_limit_len = 10;
   while(1) {
     each_char = fgetc(file_ptr);
+    // copy the array via realloc
+    if (line_limit_len == line_length) {
+      line_arr = realloc(line_arr, (line_limit_len*2));
+      line_limit_len *= 2;
+    }
     if (each_char == EOF || each_char == '\0') {
+      line_arr[line_length++] = '\0';
       break;
     }
-    line_arr[line_length++] = each_char;
-    
+    line_arr[line_length++] = each_char;    
   }
-
-
+  fclose(file_ptr);
+  return line_arr;
 }
