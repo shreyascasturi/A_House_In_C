@@ -76,34 +76,79 @@ void list_all_items(Room* room) {
 }
 
 // a basic re-implementation of line reading
-char* read_line(char* file_name) {
-  char* line_arr;
+// given a file, get an array of lines with length.
+char** read_line(char* file_name, int* line_arr_len) {
+
+  // alloc space, open file
+  char** line_arr = malloc(10 * sizeof(char*));
+  int arr_len = 0;
+  int arr_limit_len = 10;
+  char* line;
   FILE* file_ptr;
   file_ptr = fopen(file_name, "r");
   if (file_ptr == NULL) {
     fprintf(stderr, "Cannot open file\n");    
   }
+
+  // initial string alloc, prep for loop
   char each_char;
-  // initial char arr allocation
-  line_arr = malloc(10 * sizeof(char)); 
-  if (line_arr == NULL) {
+  line = malloc(10 * sizeof(char)); 
+  if (line == NULL) {
     exit(0);
   }
-  int line_length = 0;
+  int line_len = 0;
   int line_limit_len = 10;
+ 
+  
+  // loop: add line to line_arr
   while(1) {
     each_char = fgetc(file_ptr);
-    // copy the array via realloc
-    if (line_limit_len == line_length) {
-      line_arr = realloc(line_arr, (line_limit_len*2));
+    
+    // resize line when needed
+    if (line_limit_len == line_len) {
+      line = realloc(line, (line_limit_len*2));
+      if (line == NULL) {
+        exit(0);
+      }
       line_limit_len *= 2;
     }
-    if (each_char == EOF || each_char == '\0') {
-      line_arr[line_length++] = '\0';
+
+    // if EOF or NUL, check if resize of line_arr needed
+    // if NUL, need to reset len and limit_len vars for new line.
+    if (each_char == EOF) {
+      if (arr_len == arr_limit_len) {
+        line_arr = realloc(line_arr, (arr_limit_len * sizeof(char*) * 2));
+        if (line_arr == NULL) {
+          exit(0);
+        }
+        arr_limit_len *= 2;
+      }
+      line[line_len++] = '\0';
+      line_arr[arr_len++] = line;
       break;
+    } else if (each_char == '\0') {
+      if (arr_len == arr_limit_len) {
+        line_arr = realloc(line_arr, (arr_limit_len * sizeof(char*) * 2));
+        if (line_arr == NULL) {
+          exit(0);
+        }
+        arr_limit_len *= 2;
+      }
+      line[line_len++] = '\0';
+      line_arr[arr_len++] = line;
+
+      line_len = 0;
+      line_limit_len = 10;
+      line = malloc(10 * sizeof(char));
+      if (line == NULL) {
+        exit(0);
+      }
     }
-    line_arr[line_length++] = each_char;    
+    line[line_len++] = each_char;    
   }
+
+  // close file, set len, return array.
   fclose(file_ptr);
+  *line_arr_len = arr_len;
   return line_arr;
 }
