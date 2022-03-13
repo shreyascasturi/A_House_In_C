@@ -2,14 +2,15 @@
 #include <stdlib.h>
 
 char** read_line(char* file_name, int* line_arr_len);
+char** check_array_len(char** array_of_lines, int* array_len, int* array_limit_len);
 
 void main() {
   char* filename = "test.txt";
   int llen = 0;
-  int* line_arr_len = &llen;
-  char** arr = read_line(filename, line_arr_len);
-  printf("this is the length of the array: %d\n", *line_arr_len);
-  for (int i = 0; i < *line_arr_len - 1; i++) {
+  int* len_lines_arr = &llen;
+  char** arr = read_line(filename, len_lines_arr);
+  printf("this is the length of the array: %d\n", *len_lines_arr);
+  for (int i = 0; i < *len_lines_arr; i++) {
     char* line = *(arr + i);
     printf("this is the %d-th line: %s\n", i, line);
   }
@@ -18,10 +19,10 @@ void main() {
 char** read_line(char* file_name, int* line_arr_len) {
 
   // alloc space, open file
-  char** line_arr = malloc(10 * sizeof(char*));
-  int arr_len = 0;
-  int arr_limit_len = 10;
-  char* line;
+  char** array_of_lines = malloc(10 * sizeof(char*));
+  int array_len = 0;
+  int array_limit_len = 10;
+  char* each_line;
   FILE* file_ptr;
   file_ptr = fopen(file_name, "r");
   if (file_ptr == NULL) {
@@ -30,12 +31,12 @@ char** read_line(char* file_name, int* line_arr_len) {
 
   // initial string alloc, prep for loop
   char each_char;
-  line = malloc(10 * sizeof(char)); 
-  if (line == NULL) {
+  each_line = malloc(10 * sizeof(char)); 
+  if (each_line == NULL) {
     exit(0);
   }
-  int line_len = 0;
-  int line_limit_len = 10;
+  int each_line_len = 0;
+  int each_line_limit_len = 10;
  
   
   // loop: add line to line_arr
@@ -43,52 +44,54 @@ char** read_line(char* file_name, int* line_arr_len) {
     each_char = fgetc(file_ptr);
     
     // resize line when needed
-    if (line_limit_len == line_len) {
-      line = realloc(line, (line_limit_len*2));
-      if (line == NULL) {
+    if (each_line_len == each_line_limit_len) {
+      each_line = realloc(each_line, (each_line_limit_len*2));
+      if (each_line == NULL) {
         exit(0);
       }
-      line_limit_len *= 2;
+      each_line_limit_len *= 2;
     }
 
     // if EOF or NUL, check if resize of line_arr needed
     // if NUL, need to reset len and limit_len vars for new line.
+    // resize each_line to be exact length.
     if (each_char == EOF) {
-      if (arr_len == arr_limit_len) {
-        line_arr = realloc(line_arr, (arr_limit_len * sizeof(char*) * 2));
-        if (line_arr == NULL) {
-          exit(0);
-        }
-        arr_limit_len *= 2;
-      }
-      line[line_len++] = '\0';
-      line_arr[arr_len++] = line;
       break;
     } else if (each_char == '\n') {
-      if (arr_len == arr_limit_len) {
-        line_arr = realloc(line_arr, (arr_limit_len * sizeof(char*) * 2));
-        if (line_arr == NULL) {
-          exit(0);
-        }
-        arr_limit_len *= 2;
-      }
-      line[line_len++] = '\0';
-      line_arr[arr_len++] = line;
+      array_of_lines = check_array_len(array_of_lines, &array_len, &array_limit_len);
+      each_line[each_line_len++] = '\0';
+      each_line = realloc(each_line, each_line_len);
+      array_of_lines[array_len++] = each_line;
 
-      line_len = 0;
-      line_limit_len = 10;
-      line = malloc(10 * sizeof(char));
-      if (line == NULL) {
+      each_line_len = 0;
+      each_line_limit_len = 10;
+      each_line = malloc(10 * sizeof(char));
+      if (each_line == NULL) {
         exit(0);
       }
+    } else {
+      each_line[each_line_len++] = each_char;    
     }
-    line[line_len++] = each_char;    
+
   }
 
-  // close file, set len, return array.
+  // close file, set len, realloc exactly, return array.
   fclose(file_ptr);
-  *line_arr_len = arr_len;
-  return line_arr;
+  *line_arr_len = array_len;
+  array_of_lines = realloc(array_of_lines, (sizeof(char*) * array_len));
+  return array_of_lines;
 }
 
 
+char** check_array_len(char** array_of_lines, int* array_len, int* array_limit_len) {
+  if (*array_len == *array_limit_len) {
+    array_of_lines = realloc(array_of_lines, (*array_limit_len * sizeof(char*) * 2));
+    if (array_of_lines == NULL) {
+      exit(0);
+    }
+    *array_limit_len *= 2;
+    return array_of_lines;
+  } else {
+    return array_of_lines;
+  }
+}
