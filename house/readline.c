@@ -1,26 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-char** read_line(char* file_name, int* line_arr_len);
-char** check_array_len(char** array_of_lines, int* array_len, int* array_limit_len);
-
-void main() {
-  
-  char* filename = "test.txt";
-  int llen = 0;
-  int* len_lines_arr = &llen;
-
-  char** arr = read_line(filename, len_lines_arr);
-  
-  // a basic test -- print length and each line
-  printf("this is the length of the array: %d\n", *len_lines_arr);
-  
-  for (int i = 0; i < *len_lines_arr; i++) {
-    char* line = *(arr + i);
-    printf("this is the %d-th line: %s\n", i, line);
-  }
-
-}
+#include "readline.h"
 
 // Given file and length pointer:
 // read each line of file, 

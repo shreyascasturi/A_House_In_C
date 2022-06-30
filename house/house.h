@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "floor.h"
+#include "readline.h"
 
 #define GET_DATE_TIME {time_t result = time(NULL); \
     printf("The date/time is: %s\n", ctime(&result));\
